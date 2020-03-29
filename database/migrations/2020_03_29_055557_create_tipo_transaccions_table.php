@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePerfilesTable extends Migration
+class CreateTipoTransaccionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreatePerfilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('perfiles', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('tipo_transacciones', function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->string('nombre');
+            $table->integer('estado');
             $table->timestamps();
-
         });
     }
 
@@ -28,6 +28,6 @@ class CreatePerfilesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('perfiles');
+        Schema::dropIfExists('tipo_transacciones');
     }
 }

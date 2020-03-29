@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCuentasTable extends Migration
+class CreateUsuariosPerfilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateCuentasTable extends Migration
      */
     public function up()
     {
-        Schema::create('cuentas', function (Blueprint $table) {
+        Schema::create('usuarios_permisos', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('estado');
             $table->bigInteger('fk_usuario')->unsigned();
             $table->foreign('fk_usuario')->references('id')->on('usuarios');
-            $table->string('password');
-            $table->string('nombre');
-            $table->float('saldo');
-            $table->integer('estado');
-            $table->integer('fk_tipo_cuenta');
+            $table->bigInteger('fk_perfil')->unsigned();
+            $table->foreign('fk_perfil')->references('id')->on('permisos');
+            $table->bigInteger('fk_usuario_creador')->unsigned();
+            $table->foreign('fk_usuario_creador')->references('id')->on('usuarios');
             $table->timestamps();
         });
     }
@@ -33,6 +33,6 @@ class CreateCuentasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cuentas');
+        Schema::dropIfExists('usuarios_permisos');
     }
 }

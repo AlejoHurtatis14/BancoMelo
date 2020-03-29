@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\transacciones;
+use App\codigo_solicitud;
 use Illuminate\Http\Request;
 
-class TransaccionesController extends Controller
+class CodigoSolicitudController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class TransaccionesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\transacciones  $transacciones
+     * @param  \App\codigo_solicitud  $codigo_solicitud
      * @return \Illuminate\Http\Response
      */
-    public function show(transacciones $transacciones)
+    public function show(codigo_solicitud $codigo_solicitud)
     {
         //
     }
@@ -52,10 +52,10 @@ class TransaccionesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\transacciones  $transacciones
+     * @param  \App\codigo_solicitud  $codigo_solicitud
      * @return \Illuminate\Http\Response
      */
-    public function edit(transacciones $transacciones)
+    public function edit(codigo_solicitud $codigo_solicitud)
     {
         //
     }
@@ -64,10 +64,10 @@ class TransaccionesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\transacciones  $transacciones
+     * @param  \App\codigo_solicitud  $codigo_solicitud
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, transacciones $transacciones)
+    public function update(Request $request, codigo_solicitud $codigo_solicitud)
     {
         //
     }
@@ -75,10 +75,10 @@ class TransaccionesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\transacciones  $transacciones
+     * @param  \App\codigo_solicitud  $codigo_solicitud
      * @return \Illuminate\Http\Response
      */
-    public function destroy(transacciones $transacciones)
+    public function destroy(codigo_solicitud $codigo_solicitud)
     {
         //
     }

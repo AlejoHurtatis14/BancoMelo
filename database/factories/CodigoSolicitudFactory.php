@@ -2,10 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\transacciones;
+use App\codigo_solicitud;
 use Faker\Generator as Faker;
 
-$factory->define(transacciones::class, function (Faker $faker) {
+$factory->define(codigo_solicitud::class, function (Faker $faker) {
     return [
         //
     ];
