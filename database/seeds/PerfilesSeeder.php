@@ -11,7 +11,7 @@ class PerfilesSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('permisos')->insert([
+        DB::table('perfiles')->insert([
             'nombre' => "Administrador",
             'estado' => 1,
             'fk_usuario_creador' => 1,
@@ -19,7 +19,7 @@ class PerfilesSeeder extends Seeder
             'updated_at' => date('Y-m-d H:m:s')
         ]);
 
-        DB::table('permisos')->insert([
+        DB::table('perfiles')->insert([
         'nombre' => "Usuarios",
             'estado' => 1,
             'fk_usuario_creador' => 1,
@@ -27,7 +27,7 @@ class PerfilesSeeder extends Seeder
             'updated_at' => date('Y-m-d H:m:s')
         ]);
 
-        DB::table('usuarios_permisos')->insert([
+        DB::table('usuarios_perfiles')->insert([
             'fk_usuario' => 1,
             'fk_perfil' => 1,
             'estado' => 1,

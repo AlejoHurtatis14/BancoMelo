@@ -13,7 +13,7 @@ class CreatePerfilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('permisos', function (Blueprint $table) {
+        Schema::create('perfiles', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nombre');
             $table->integer('estado');
@@ -30,6 +30,6 @@ class CreatePerfilesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('permisos');
+        Schema::dropIfExists('perfiles');
     }
 }

@@ -13,13 +13,13 @@ class CreateUsuariosPerfilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('usuarios_permisos', function (Blueprint $table) {
+        Schema::create('usuarios_perfiles', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('estado');
             $table->bigInteger('fk_usuario')->unsigned();
             $table->foreign('fk_usuario')->references('id')->on('usuarios');
             $table->bigInteger('fk_perfil')->unsigned();
-            $table->foreign('fk_perfil')->references('id')->on('permisos');
+            $table->foreign('fk_perfil')->references('id')->on('perfiles');
             $table->bigInteger('fk_usuario_creador')->unsigned();
             $table->foreign('fk_usuario_creador')->references('id')->on('usuarios');
             $table->timestamps();
@@ -33,6 +33,6 @@ class CreateUsuariosPerfilesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('usuarios_permisos');
+        Schema::dropIfExists('usuarios_perfiles');
     }
 }

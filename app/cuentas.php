@@ -8,10 +8,14 @@ class cuentas extends Model
 {
     //
     public function usuario(){
-        return $this->belongsTo('App\usuarios', 'id_usuario', 'id');
+        return $this->belongsTo('App\usuarios', 'fk_usuario');
     }
 
     public function transacciones(){
-        return $this->hasMany('App\transacciones', 'id_cuenta', 'id');
+        return $this->hasMany('App\transaccion', 'fk_cuenta', 'id');
+    }
+
+    public function codigosSolicitud(){
+        return $this->hasMany('App\codigo_solicitud', 'fk_cuenta', 'id');
     }
 }
