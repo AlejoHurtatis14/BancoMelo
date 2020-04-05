@@ -70,11 +70,11 @@ class UsuariosController extends Controller
     */
     public function inicioSesion($nroDoc, $pass){
         $usuario = usuarios::where(array(
-           'usuario' => $nroDoc,
+            'usuario' => $nroDoc,
             'password' => $pass
         ))->first();
         if (is_object($usuario)){
-            $jwt = new JwtLogin();
+            /* $jwt = new JwtLogin();
             $token = $jwt->generarToken($usuario->id, $usuario->usuario, $usuario->password);
             $validarToken = $jwt->verificarToken($token, true);
             return array(
@@ -82,7 +82,11 @@ class UsuariosController extends Controller
                     'token' => $token,
                     'tokenTiempo' => $validarToken,
                     'usuario' => $usuario
-            );            
+            ); */
+            return array(
+                'success' => true,
+                'usuario' => $usuario
+        );            
         }else {
             return array(
                 'success' => false,
@@ -143,9 +147,52 @@ class UsuariosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $validarCorreo = usuarios::where('correo', $request->correo)->get();
+        $validarDoc = usuarios::where('nro_documento', $request->nro_documento)->get();
+        
+        if($validarCorreo->isEmpty() && $validarDoc->isEmpty()){
+            $usuario = new usuarios;
+            $usuario->nombres = $request->nombres;
+            $usuario->apellidos = $request->apellidos;
+            $usuario->telefono = $request->telefono;
+            $usuario->correo = $request->correo;
+            $usuario->usuario = $request->usuario;
+            $usuario->password = $request->password;
+            $usuario->nro_documento = $request->nro_documento;
+            $usuario->estado = 1;
+            $usuario->usuario_creador = $request->usuario_creador;
+
+            if($usuario->save()){
+                $resp = array(
+                    "success" => true,
+                    "mensaje" => "Se ha creado el usuario"
+                );
+            }else{
+                $resp = array(
+                    "success" => false,
+                    "mensaje" => "No se ha creado el usuario"
+                );
+            }
+        }else{
+
+            $mensaje;
+
+            if(!$validarCorreo->isEmpty() && !$validarDoc->isEmpty()){
+                $mensaje = 'Correo electronico y el documento';
+            }else if(!$validarCorreo->isEmpty()){
+                $mensaje = 'Correo Electronico';
+            }else{
+                $mensaje = 'Documento';
+            }
+            
+            $resp =  array(
+                "success" => false,
+                "mensaje" => "El ".$mensaje." ya se encuentra registrado"
+            );
+        }
+        return $resp;
     }
 
     /**

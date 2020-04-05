@@ -22,3 +22,5 @@ Route::middleware(['guest'])->group(function () {
     Route::get('login/{nroDoc}/{pass}', 'UsuariosController@inicioSesion');
     Route::get('validarToken/{tiempoToken}', 'UsuariosController@validarToken');
 });
+
+Route::post('crear', 'UsuariosController@create');
