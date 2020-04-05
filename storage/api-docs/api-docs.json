@@ -1,0 +1,65 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Proyecto Banco WB",
+        "description": "Conocer funcionamiento en peticiones http a la Api.",
+        "contact": {
+            "email": "contacto@bancowb.com"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/login/{nroDoc}/{pass}": {
+            "get": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Get list of projects",
+                "description": "Iniciar sesion.",
+                "operationId": "inicioSesion",
+                "parameters": [
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "description": "Header de autorización.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "nroDoc",
+                        "in": "path",
+                        "description": "Nombre de usuario.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pass",
+                        "in": "path",
+                        "description": "Contraseña.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación correcta."
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        }
+    }
+}

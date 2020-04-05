@@ -6,9 +6,68 @@ use App\usuarios;
 use Illuminate\Http\Request;
 use App\Helpers\JwtLogin;
 
+/**
+ * @OA\Swagger(
+ *     basePath="",
+ *     schemes={"http", "https"},
+ *     server=L5_SWAGGER_CONST_HOST,
+ *     @OA\Info(
+ *         version="1.0.0",
+ *         title="Proyecto Banco WB",
+ *         description="Conocer funcionamiento en peticiones http a la Api.",
+ *         @OA\Contact(
+ *             email="contacto@bancowb.com"
+ *         ),
+ *     )
+ * )
+ */
 
 class UsuariosController extends Controller
 {
+    /**
+    * @OA\Get(
+    *      path="/api/login/{nroDoc}/{pass}",
+    *      operationId="inicioSesion",
+    *      tags={"Projects"},
+    *      summary="Get list of projects",
+    *      description="Iniciar sesion.",
+    *      @OA\Parameter(
+    *         name="authorization",
+    *         in="header",
+    *         description="Header de autorización.",
+    *         required=false,
+    *         @OA\Schema(
+    *             type="string"
+    *         )
+    *      ),
+    *      @OA\Parameter(
+    *         name="nroDoc",
+    *         in="path",
+    *         description="Nombre de usuario.",
+    *         required=true,
+    *         @OA\Schema(
+    *             type="string",
+    *         ),
+    *      ),
+    *      @OA\Parameter(
+    *         name="pass",
+    *         in="path",
+    *         description="Contraseña.",
+    *         required=true,
+    *         @OA\Schema(
+    *             type="string"
+    *         )
+    *      ),
+    *      @OA\Response(
+    *          response=200,
+    *          description="Operación correcta."
+    *       ),
+    *       @OA\Response(response=400, description="Bad request"),
+    *       security={
+    *           {"api_key_security_example": {}}
+    *       }
+    *     )
+    */
     public function inicioSesion($nroDoc, $pass){
         $usuario = usuarios::where(array(
            'usuario' => $nroDoc,
