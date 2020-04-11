@@ -23,4 +23,5 @@ Route::middleware(['guest'])->group(function () {
     Route::get('validarToken/{tiempoToken}', 'UsuariosController@validarToken');
 });
 
-Route::post('crear', 'UsuariosController@create');
+Route::post('usuarios/crear', 'UsuariosController@create');
+Route::get('usuarios/listar', 'UsuariosController@show');

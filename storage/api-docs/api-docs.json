@@ -61,7 +61,7 @@
                 ]
             }
         },
-        "/api/crear": {
+        "/api/usuarios/crear": {
             "post": {
                 "tags": [
                     "Projects"
@@ -150,6 +150,40 @@
                         "schema": {
                             "type": "string",
                             "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación correcta."
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/usuarios/listar": {
+            "get": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Get list of projects",
+                "description": "Listar usuarios.",
+                "operationId": "show",
+                "parameters": [
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "description": "Header de autorización.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 ],
