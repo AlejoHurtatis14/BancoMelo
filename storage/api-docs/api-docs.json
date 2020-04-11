@@ -60,6 +60,113 @@
                     }
                 ]
             }
+        },
+        "/api/crear": {
+            "post": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Get list of projects",
+                "description": "Iniciar sesion.",
+                "operationId": "create",
+                "parameters": [
+                    {
+                        "name": "authorization",
+                        "in": "header",
+                        "description": "Header de autorización.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "nombres",
+                        "in": "query",
+                        "description": "Nombre del usuario.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "apellidos",
+                        "in": "query",
+                        "description": "Apellidos del usuario.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "telefono",
+                        "in": "query",
+                        "description": "Telefono del usuario.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "correo",
+                        "in": "query",
+                        "description": "Correo electronico del usuario.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "usuario",
+                        "in": "query",
+                        "description": "Usuario.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "Contraseña del usuario.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "nro_documento",
+                        "in": "query",
+                        "description": "Numero de documento del usuario.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "usuario_creador",
+                        "in": "query",
+                        "description": "Administrador.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación correcta."
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
         }
     }
 }

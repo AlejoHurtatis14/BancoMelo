@@ -143,15 +143,108 @@ class UsuariosController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    * @OA\Post(
+    *      path="/api/crear",
+    *      operationId="create",
+    *      tags={"Projects"},
+    *      summary="Get list of projects",
+    *      description="Iniciar sesion.",
+    *      @OA\Parameter(
+    *         name="authorization",
+    *         in="header",
+    *         description="Header de autorización.",
+    *         required=false,
+    *         @OA\Schema(
+    *             type="string"
+    *         )
+    *      ),
+    *      @OA\Parameter(
+    *         name="nombres",
+    *         in="query",
+    *         description="Nombre del usuario.",
+    *         required=true,
+    *         @OA\Schema(
+    *             type="string",
+    *         ),
+    *      ),
+    *      @OA\Parameter(
+    *         name="apellidos",
+    *         in="query",
+    *         description="Apellidos del usuario.",
+    *         required=true,
+    *         @OA\Schema(
+    *             type="string"
+    *         )
+    *      ),
+    *      @OA\Parameter(
+    *         name="telefono",
+    *         in="query",
+    *         description="Telefono del usuario.",
+    *         required=true,
+    *         @OA\Schema(
+    *             type="string"
+    *         )
+    *      ),
+    *      @OA\Parameter(
+    *         name="correo",
+    *         in="query",
+    *         description="Correo electronico del usuario.",
+    *         required=true,
+    *         @OA\Schema(
+    *             type="string"
+    *         )
+    *      ),
+    *      @OA\Parameter(
+    *         name="usuario",
+    *         in="query",
+    *         description="Usuario.",
+    *         required=true,
+    *         @OA\Schema(
+    *             type="string"
+    *         )
+    *      ),
+    *      @OA\Parameter(
+    *         name="password",
+    *         in="query",
+    *         description="Contraseña del usuario.",
+    *         required=true,
+    *         @OA\Schema(
+    *             type="string"
+    *         )
+    *      ),
+    *      @OA\Parameter(
+    *         name="nro_documento",
+    *         in="query",
+    *         description="Numero de documento del usuario.",
+    *         required=true,
+    *         @OA\Schema(
+    *             type="string",
+    *         )
+    *      ),
+    *      @OA\Parameter(
+    *         name="usuario_creador",
+    *         in="query",
+    *         description="Administrador.",
+    *         required=true,
+    *         @OA\Schema(
+    *             type="string",
+    *             default=1,
+    *         )
+    *      ),
+    *      @OA\Response(
+    *          response=200,
+    *          description="Operación correcta."
+    *       ),
+    *       @OA\Response(response=400, description="Bad request"),
+    *       security={
+    *           {"api_key_security_example": {}}
+    *       }
+    *     )
+    */
     public function create(Request $request)
     {
         $validarCorreo = usuarios::where('correo', $request->correo)->get();
         $validarDoc = usuarios::where('nro_documento', $request->nro_documento)->get();
-        
         if($validarCorreo->isEmpty() && $validarDoc->isEmpty()){
             $usuario = new usuarios;
             $usuario->nombres = $request->nombres;
@@ -176,9 +269,7 @@ class UsuariosController extends Controller
                 );
             }
         }else{
-
             $mensaje;
-
             if(!$validarCorreo->isEmpty() && !$validarDoc->isEmpty()){
                 $mensaje = 'Correo electronico y el documento';
             }else if(!$validarCorreo->isEmpty()){
@@ -186,7 +277,6 @@ class UsuariosController extends Controller
             }else{
                 $mensaje = 'Documento';
             }
-            
             $resp =  array(
                 "success" => false,
                 "mensaje" => "El ".$mensaje." ya se encuentra registrado"
