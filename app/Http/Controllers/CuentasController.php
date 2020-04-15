@@ -39,14 +39,46 @@ class CuentasController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\cuentas  $cuentas
-     * @return \Illuminate\Http\Response
-     */
+    * @OA\Get(
+    *      path="/api/cuentas/listar",
+    *      operationId="show",
+    *      tags={"Projects"},
+    *      summary="Get list of projects",
+    *      description="Listar cuentas.",
+    *      @OA\Parameter(
+    *         name="authorization",
+    *         in="header",
+    *         description="Header de autorización.",
+    *         required=false,
+    *         @OA\Schema(
+    *             type="string"
+    *         )
+    *      ),
+    *      @OA\Response(
+    *          response=200,
+    *          description="Operación correcta."
+    *       ),
+    *       @OA\Response(response=400, description="Bad request"),
+    *       security={
+    *           {"api_key_security_example": {}}
+    *       }
+    *     )
+    */
     public function show(cuentas $cuentas)
     {
-        //
+        $cuentas = usuarios::where('estado', 1)->get();
+        if (empty($usuarios)) {
+            $resp = array(
+                "success" => false,
+                "mensaje" => "No hay cuentas"
+            );
+        } else {
+            $resp = array(
+                "success" => true,
+                "mensaje" => $cuentas
+            );
+        }
+        return $resp;
     }
 
     /**
