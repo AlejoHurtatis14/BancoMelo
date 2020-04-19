@@ -66,8 +66,8 @@ class CuentasController extends Controller
     */
     public function show(cuentas $cuentas)
     {
-        $cuentas = usuarios::where('estado', 1)->get();
-        if (empty($usuarios)) {
+        $cuentas = cuentas::where('estado', 1)->orWhere('estado', 0)->get();
+        if (empty($cuentas)) {
             $resp = array(
                 "success" => false,
                 "mensaje" => "No hay cuentas"

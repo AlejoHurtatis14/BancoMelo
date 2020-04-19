@@ -24,6 +24,8 @@ class CreateUsuariosTable extends Migration
             $table->string('nro_documento');
             $table->integer('estado');
             $table->integer('usuario_creador');
+            $table->bigInteger('fk_perfil')->unsigned();
+            $table->foreign('fk_perfil')->references('id')->on('perfiles');
             $table->timestamps();
         });
     }

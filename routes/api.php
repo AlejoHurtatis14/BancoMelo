@@ -29,3 +29,6 @@ Route::get('usuarios/listar', 'UsuariosController@show');
 
 //Rutas de cuentas
 Route::get('cuentas/listar', 'CuentasController@show');
+
+//Rutas de movimientos
+Route::get('movimientos/listar/{cuenta}', 'TransaccionController@show');

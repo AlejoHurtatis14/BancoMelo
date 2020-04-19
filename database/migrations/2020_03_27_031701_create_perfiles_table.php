@@ -17,8 +17,9 @@ class CreatePerfilesTable extends Migration
             $table->bigIncrements('id');
             $table->string('nombre');
             $table->integer('estado');
-            $table->bigInteger('fk_usuario_creador')->unsigned();
-            $table->foreign('fk_usuario_creador')->references('id')->on('usuarios');
+            $table->integer('usuario_creador');
+            //$table->bigInteger('usuario_creador')->unsigned();
+            //$table->foreign('fk_usuario_creador')->references('id')->on('usuarios');
             $table->timestamps();
         });
     }
