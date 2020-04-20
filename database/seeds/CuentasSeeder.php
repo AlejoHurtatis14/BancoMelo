@@ -13,7 +13,7 @@ class CuentasSeeder extends Seeder
     {
         DB::table('cuentas')->insert([
             'nombre' => 'Cuenta casa',
-            'saldo' => '10000',
+            'saldo' => 10000,
             'password' => '123',
             'estado' => 1,
             'fk_tipo_cuenta' => 1,
