@@ -22,6 +22,22 @@ class UsuariosSeeder extends Seeder
             'nro_documento' => '12345',
             'estado' => 1,
             'usuario_creador' => 1,
+            'fk_perfil' => 1,
+            'created_at' => date('Y-m-d H:m:s'),
+            'updated_at' => date('Y-m-d H:m:s'),
+        ]);
+
+        DB::table('usuarios')->insert([
+            'nombres' => 'Usuario',
+            'apellidos' => 'apellido',
+            'telefono' => '22222',
+            'correo' => 'u@u.com',
+            'usuario' => 'usuario',
+            'password' => '2',
+            'nro_documento' => '54321',
+            'estado' => 1,
+            'usuario_creador' => 1,
+            'fk_perfil' => 2,
             'created_at' => date('Y-m-d H:m:s'),
             'updated_at' => date('Y-m-d H:m:s'),
         ]);

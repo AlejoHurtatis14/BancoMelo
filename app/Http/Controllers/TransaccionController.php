@@ -39,14 +39,46 @@ class TransaccionController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\transaccion  $transaccion
-     * @return \Illuminate\Http\Response
-     */
-    public function show(transaccion $transaccion)
+    * @OA\Get(
+    *      path="/api/movimientos/listar",
+    *      operationId="show",
+    *      tags={"Projects"},
+    *      summary="Get list of projects",
+    *      description="Listar movimientos.",
+    *      @OA\Parameter(
+    *         name="authorization",
+    *         in="header",
+    *         description="Header de autorización.",
+    *         required=false,
+    *         @OA\Schema(
+    *             type="string"
+    *         )
+    *      ),
+    *      @OA\Response(
+    *          response=200,
+    *          description="Operación correcta."
+    *       ),
+    *       @OA\Response(response=400, description="Bad request"),
+    *       security={
+    *           {"api_key_security_example": {}}
+    *       }
+    *     )
+    */
+    public function show($cuenta)
     {
-        //
+        $movimientos = transaccion::where('fk_cuenta', $cuenta)->get();
+        if (empty($movimientos)) {
+            $resp = array(
+                "success" => false,
+                "mensaje" => "No hay movimientos"
+            );
+        } else {
+            $resp = array(
+                "success" => true,
+                "mensaje" => $movimientos
+            );
+        }
+        return $resp;
     }
 
     /**
