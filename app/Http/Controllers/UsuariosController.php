@@ -252,10 +252,10 @@ class UsuariosController extends Controller
             $usuario->telefono = $request->telefono;
             $usuario->correo = $request->correo;
             $usuario->usuario = $request->usuario;
-            $usuario->password = $request->password;
-            $usuario->nro_documento = $request->nro_documento;
+            $usuario->password = $request->clave;
+            $usuario->nro_documento = $request->documento;
             $usuario->estado = 1;
-            $usuario->usuario_creador = $request->usuario_creador;
+            $usuario->usuario_creador = $request->usuario_creador ? $request->usuario_creador : '1' ;
 
             if($usuario->save()){
                 $resp = array(
