@@ -26,9 +26,14 @@ Route::middleware(['guest'])->group(function () {
 //Rutas de usuario
 Route::post('usuarios/crear', 'UsuariosController@create');
 Route::get('usuarios/listar', 'UsuariosController@show');
+Route::get('usuarios/{creador}', 'UsuariosController@usuarios_creador');
 
 //Rutas de cuentas
 Route::get('cuentas/listar', 'CuentasController@show');
+Route::post('cuentas/filter', 'CuentasController@filter');
+Route::get('cuentas/listar-estadistica', 'CuentasController@listarEstadistica');
 
 //Rutas de movimientos
 Route::get('movimientos/listar/{cuenta}', 'TransaccionController@show');
+Route::post('movimientos/filter', 'TransaccionController@filter');
+Route::get('movimientos/listar-estadistica', 'TransaccionController@listarEstadistica');
