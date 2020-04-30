@@ -23,9 +23,30 @@ class CuentasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+    
+        $cuenta = new cuentas;
+        $cuenta->fk_usuario = $request->idUsuario;
+        $cuenta->estado = $request->estado;
+        $cuenta->password = $request->clave;
+        $cuenta->nombre = $request->nombre;
+        $cuenta->saldo = $request->saldo;
+        $cuenta->fk_tipo_cuenta = $request->tipoCuenta;
+        if($cuenta->save()){
+            $resp = array(
+                "success" => true,
+                "mensaje" => "Se ha creado la cuenta"
+            );
+        }else{
+            $resp = array(
+                "success" => false,
+                "mensaje" => "No se ha creado la cuenta"
+            );
+        }
+        
+    
+        return $resp;
     }
 
     /**
@@ -223,6 +244,24 @@ class CuentasController extends Controller
     public function listarEstadistica()
     {
         $cuentas = cuentas::select('created_at')->get();
+        if (empty($cuentas)) {
+            $resp = array(
+                "success" => false,
+                "mensaje" => "No hay cuentas"
+            );
+        } else {
+            $resp = array(
+                "success" => true,
+                "mensaje" => $cuentas
+            );
+        }
+        return $resp;
+    }
+
+
+    public function getUserAccounts($idUsuario)
+    {
+        $cuentas = cuentas::where('fk_usuario', $idUsuario)->get();
         if (empty($cuentas)) {
             $resp = array(
                 "success" => false,

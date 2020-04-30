@@ -30,8 +30,11 @@ Route::get('usuarios/{creador}', 'UsuariosController@usuarios_creador');
 
 //Rutas de cuentas
 Route::get('cuentas/listar', 'CuentasController@show');
+Route::get('cuentas/listar/{idUsuario}', 'CuentasController@getUserAccounts');
 Route::post('cuentas/filter', 'CuentasController@filter');
 Route::get('cuentas/listar-estadistica', 'CuentasController@listarEstadistica');
+Route::post('cuentas/crear', 'CuentasController@create');
+
 
 //Rutas de movimientos
 Route::get('movimientos/listar/{cuenta}', 'TransaccionController@show');
