@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\cuentas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use App\codigo_solicitud;
 
 class CuentasController extends Controller
 {
@@ -44,8 +45,6 @@ class CuentasController extends Controller
                 "mensaje" => "No se ha creado la cuenta"
             );
         }
-        
-    
         return $resp;
     }
 
@@ -123,7 +122,21 @@ class CuentasController extends Controller
      */
     public function update(Request $request, cuentas $cuentas)
     {
-        //
+        $cuenta = cuentas::where('id', $request['cuenta'])->get();
+        if (!empty($cuenta[0])) {
+            $total = $cuenta[0]['saldo'] + $request['valor'];
+            $resul = cuentas::where('id', $request['cuenta'])->update(['saldo' => $total]);
+            $resp = array(
+                "success" => true,
+                "mensaje" => 'Consignación exitosa.'
+            );
+        } else {
+            $resp = array(
+                "success" => false,
+                "mensaje" => 'No se encontro cuenta.'
+            );
+        }
+        return $resp;
     }
 
     /**
@@ -271,6 +284,24 @@ class CuentasController extends Controller
             $resp = array(
                 "success" => true,
                 "mensaje" => $cuentas
+            );
+        }
+        return $resp;
+    }
+
+    public function retirarCuenta(Request $request, cuentas $cuentas)
+    {
+        $codigo = codigo_solicitud::where('codigo', $request['valor'])->get();
+        if (!empty($codigo[0])) {
+            error_log($codigo);
+            $resp = array(
+                "success" => true,
+                "mensaje" => 'Se encontro código.'
+            );
+        } else {
+            $resp = array(
+                "success" => false,
+                "mensaje" => 'No se encontro código.'
             );
         }
         return $resp;

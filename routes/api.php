@@ -34,6 +34,8 @@ Route::get('cuentas/listar/{idUsuario}', 'CuentasController@getUserAccounts');
 Route::post('cuentas/filter', 'CuentasController@filter');
 Route::get('cuentas/listar-estadistica', 'CuentasController@listarEstadistica');
 Route::post('cuentas/crear', 'CuentasController@create');
+Route::put('cuentas/consignar', 'CuentasController@update');
+Route::put('cuentas/retirar', 'CuentasController@retirarCuenta');
 
 
 //Rutas de movimientos
