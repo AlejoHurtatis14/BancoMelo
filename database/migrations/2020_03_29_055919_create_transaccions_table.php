@@ -21,6 +21,8 @@ class CreateTransaccionsTable extends Migration
             $table->integer('fk_usuario_creador');
             $table->bigInteger('fk_cuenta')->unsigned();
             $table->foreign('fk_cuenta')->references('id')->on('cuentas');
+            $table->bigInteger('fk_codigo')->unsigned();
+            $table->foreign('fk_codigo')->references('id')->on('codigo_solicituds');
             $table->bigInteger('fk_tipo_transaccion')->unsigned();
             $table->foreign('fk_tipo_transaccion')->references('id')->on('tipo_transacciones');
             $table->timestamps();

@@ -17,6 +17,7 @@ class TransaccionSeeder extends Seeder
             'saldo_Actual' => 5000,
             'fk_usuario_creador' => 1,
             'fk_cuenta' => 1,
+            'fk_codigo' => 1,
             'fk_tipo_transaccion' => 1,
             'created_at' => date('Y-m-d H:m:s'),
             'updated_at' => date('Y-m-d H:m:s'),

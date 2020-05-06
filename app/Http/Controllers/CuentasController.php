@@ -6,6 +6,8 @@ use App\cuentas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use App\codigo_solicitud;
+use App\transaccion;
+use Carbon\Carbon;
 
 class CuentasController extends Controller
 {
@@ -291,13 +293,52 @@ class CuentasController extends Controller
 
     public function retirarCuenta(Request $request, cuentas $cuentas)
     {
-        $codigo = codigo_solicitud::where('codigo', $request['valor'])->get();
+        $codigo = codigo_solicitud::where('codigo', $request['valor'])->where('fk_cuenta', $request['cuenta'])->get();
         if (!empty($codigo[0])) {
-            error_log($codigo);
-            $resp = array(
-                "success" => true,
-                "mensaje" => 'Se encontro código.'
-            );
+            $fechaCreacion = $codigo[0]['created_at'];
+            $creacion = Carbon::createFromFormat('Y-m-d H:i:s', $fechaCreacion);
+            $vence = Carbon::createFromFormat('Y-m-d H:i:s', new Carbon($request['fechaActual']));
+            $diferencia = $creacion->diffInMinutes($vence);
+            error_log($creacion);
+            error_log($vence);
+            error_log($diferencia);
+            if ($diferencia <= 60) {
+                $cuenta = cuentas::where('id', $codigo[0]['fk_cuenta'])->get();
+                $saldoNuevo = $cuenta[0]['saldo'] - $codigo[0]['saldo'];
+                if ($saldoNuevo >= 0) {
+                    $resul = cuentas::where('id', $codigo[0]['fk_cuenta'])->update(['saldo' => $saldoNuevo]);
+                    $transaccion = new transaccion;
+                    $transaccion->monto = $codigo[0]['saldo'];
+                    $transaccion->saldo_anterior = $cuenta[0]['saldo'];
+                    $transaccion->saldo_Actual = $saldoNuevo;
+                    $transaccion->fk_usuario_creador = $request['creador'];
+                    $transaccion->fk_cuenta = $codigo[0]['fk_cuenta'];
+                    $transaccion->fk_tipo_transaccion = $request['transaccion'];
+                    $transaccion->fk_codigo = $codigo[0]['id'];
+                    if($transaccion->save()){
+                        $resp = array(
+                            "success" => true,
+                            "mensaje" => 'Retiro exitoso.'
+                        );
+                    } else {
+                        $resul = cuentas::where('id', $codigo[0]['fk_cuenta'])->update(['saldo' => $cuenta[0]['saldo']]);
+                        $resp = array(
+                            "success" => false,
+                            "mensaje" => "Transaccion erronea."
+                        );
+                    }
+                } else {
+                    $resp = array(
+                        "success" => false,
+                        "mensaje" => 'Saldo insuficiente.'
+                    );
+                }
+            } else {
+                $resp = array(
+                    "success" => false,
+                    "mensaje" => 'El código ha expirado.'
+                );
+            }
         } else {
             $resp = array(
                 "success" => false,
