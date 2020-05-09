@@ -89,7 +89,9 @@ class CuentasController extends Controller
     */
     public function show(cuentas $cuentas)
     {
-        $cuentas = cuentas::where('estado', 1)->orWhere('estado', 0)->get();
+        $cuentas = cuentas::join('usuarios', 'usuarios.id', '=', 'cuentas.fk_usuario')
+        ->select('cuentas.*', 'usuarios.nombres as fk_usuario', 'usuarios.apellidos')
+        ->get();
         if (empty($cuentas)) {
             $resp = array(
                 "success" => false,
@@ -214,7 +216,9 @@ class CuentasController extends Controller
                 $stringCode = $stringCode . "where('" .  $request[$properties[$i]][0] . "','" . $request[$properties[$i]][1] . "','" . $request[$properties[$i]][2] . "')->";
             }
         }
-        $stringCode = $stringCode . 'get();';
+        $stringCode = $stringCode . 'join("usuarios", "usuarios.id", "=", "cuentas.fk_usuario")
+        ->select("cuentas.*", "usuarios.nombres", "usuarios.apellidos")
+        ->get();get();';
         $cuentas = eval($stringCode);
         if (empty($cuentas)) {
             $resp = array(
@@ -291,18 +295,18 @@ class CuentasController extends Controller
         return $resp;
     }
 
+    public function validarTiempoCodigo($fechaCreacion, $fechaActual){
+        $creacion = Carbon::createFromFormat('Y-m-d H:i:s', $fechaCreacion);
+        $vence = Carbon::createFromFormat('Y-m-d H:i:s', new Carbon($fechaActual));
+        $diferencia = $creacion->diffInMinutes($vence);
+        return $diferencia <= 60 ? true : false;
+    }
+
     public function retirarCuenta(Request $request, cuentas $cuentas)
     {
         $codigo = codigo_solicitud::where('codigo', $request['valor'])->where('fk_cuenta', $request['cuenta'])->get();
         if (!empty($codigo[0])) {
-            $fechaCreacion = $codigo[0]['created_at'];
-            $creacion = Carbon::createFromFormat('Y-m-d H:i:s', $fechaCreacion);
-            $vence = Carbon::createFromFormat('Y-m-d H:i:s', new Carbon($request['fechaActual']));
-            $diferencia = $creacion->diffInMinutes($vence);
-            error_log($creacion);
-            error_log($vence);
-            error_log($diferencia);
-            if ($diferencia <= 60) {
+            if ($this->validarTiempoCodigo($codigo[0]['created_at'],$request['fechaActual'])) {
                 $cuenta = cuentas::where('id', $codigo[0]['fk_cuenta'])->get();
                 $saldoNuevo = $cuenta[0]['saldo'] - $codigo[0]['saldo'];
                 if ($saldoNuevo >= 0) {
