@@ -79,7 +79,7 @@ class TransaccionController extends Controller
         ->join('usuarios', 'usuarios.id', '=', 'transaccions.fk_usuario_creador')
         ->join('cuentas', 'cuentas.id', '=', 'transaccions.fk_cuenta')
         ->join('tipo_transacciones', 'tipo_transacciones.id', '=', 'transaccions.fk_tipo_transaccion')
-        ->join('codigo_solicituds', 'codigo_solicituds.id', '=', 'transaccions.fk_codigo')
+        ->leftjoin('codigo_solicituds', 'codigo_solicituds.id', '=', 'transaccions.fk_codigo')
         ->select('transaccions.*', 'usuarios.nombres as fk_usuario_creador', 'usuarios.apellidos', 'cuentas.nombre as fk_cuenta', 'codigo_solicituds.codigo as fk_codigo', 'tipo_transacciones.nombre as fk_tipo_transaccion')
         ->get();
         if (empty($movimientos)) {
@@ -195,7 +195,7 @@ class TransaccionController extends Controller
         $stringCode = $stringCode . 'join("usuarios", "usuarios.id", "=", "transaccions.fk_usuario_creador")
         ->join("cuentas", "cuentas.id", "=", "transaccions.fk_cuenta")
         ->join("tipo_transacciones", "tipo_transacciones.id", "=", "transaccions.fk_tipo_transaccion")
-        ->join("codigo_solicituds", "codigo_solicituds.id", "=", "transaccions.fk_codigo")
+        ->leftjoin("codigo_solicituds", "codigo_solicituds.id", "=", "transaccions.fk_codigo")
         ->select("transaccions.*", "usuarios.nombres as fk_usuario_creador", "usuarios.apellidos", "cuentas.nombre as fk_cuenta", "codigo_solicituds.codigo as fk_codigo", "tipo_transacciones.nombre as fk_tipo_transaccion")
         ->get();';
         $movimientos = eval($stringCode);

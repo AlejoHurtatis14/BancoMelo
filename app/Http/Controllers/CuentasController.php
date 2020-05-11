@@ -130,10 +130,26 @@ class CuentasController extends Controller
         if (!empty($cuenta[0])) {
             $total = $cuenta[0]['saldo'] + $request['valor'];
             $resul = cuentas::where('id', $request['cuenta'])->update(['saldo' => $total]);
-            $resp = array(
-                "success" => true,
-                "mensaje" => 'Consignación exitosa.'
-            );
+            $transaccion = new transaccion;
+            $transaccion->monto = $request['valor'];
+            $transaccion->saldo_anterior = $cuenta[0]['saldo'];
+            $transaccion->saldo_Actual = $total;
+            $transaccion->fk_usuario_creador = $request['creador'];
+            $transaccion->fk_cuenta = $request['cuenta'];
+            $transaccion->fk_tipo_transaccion = $request['transaccion'];
+            $transaccion->fk_codigo = '';
+            if($transaccion->save()){
+                $resp = array(
+                    "success" => true,
+                    "mensaje" => 'Consignación exitosa.'
+                );
+            } else {
+                $resul = cuentas::where('id', $codigo[0]['fk_cuenta'])->update(['saldo' => $cuenta[0]['saldo']]);
+                $resp = array(
+                    "success" => false,
+                    "mensaje" => "Transaccion erronea."
+                );
+            }
         } else {
             $resp = array(
                 "success" => false,
@@ -280,7 +296,7 @@ class CuentasController extends Controller
 
     public function getUserAccounts($idUsuario)
     {
-        $cuentas = cuentas::where('fk_usuario', $idUsuario)->get();
+        $cuentas = cuentas::where('fk_usuario', $idUsuario)->where('estado', 1)->get();
         if (empty($cuentas)) {
             $resp = array(
                 "success" => false,
@@ -347,6 +363,23 @@ class CuentasController extends Controller
             $resp = array(
                 "success" => false,
                 "mensaje" => 'No se encontro código.'
+            );
+        }
+        return $resp;
+    }
+
+    public function cancelar(Request $request, cuentas $cuentas)
+    {
+        $result = cuentas::where('id', $request['cuenta'])->update(['estado' => 0]);
+        if ($result) {
+            $resp = array(
+                "success" => true,
+                "mensaje" => 'Cuenta cancelada.'
+            );
+        } else {
+            $resp = array(
+                "success" => false,
+                "mensaje" => 'No fue posible cancelar.'
             );
         }
         return $resp;
