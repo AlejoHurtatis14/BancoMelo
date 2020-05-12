@@ -22,9 +22,28 @@ class CodigoSolicitudController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+   public function create(Request $request)
     {
-        //
+        $codigo = new codigo_solicitud;
+        $codigo->saldo = $request->saldo;
+        $codigo->codigo = $request->codigo;
+        $codigo->estado = $request->estado;
+        $codigo->fk_cuenta = $request->fk_cuenta;
+
+        if($codigo->save()){
+            $resp = array(
+                "success" => true,
+                "mensaje" => "Se ha creado el usuario"
+            );
+        }else{
+
+            $resp = array(
+                "success" => false,
+                "mensaje" => "No se ha creado el usuario"
+            );
+        }
+
+        return $resp;
     }
 
     /**

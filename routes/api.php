@@ -43,3 +43,8 @@ Route::put('cuentas/cancelar', 'CuentasController@cancelar');
 Route::get('movimientos/listar/{cuenta}', 'TransaccionController@show');
 Route::post('movimientos/filter', 'TransaccionController@filter');
 Route::get('movimientos/listar-estadistica', 'TransaccionController@listarEstadistica');
+
+//Rutas de Codigos
+Route::post('codigo/crear', 'CodigoSolicitudController@create');
+
+
