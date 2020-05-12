@@ -27,6 +27,7 @@ Route::middleware(['guest'])->group(function () {
 Route::post('usuarios/crear', 'UsuariosController@create');
 Route::get('usuarios/listar', 'UsuariosController@show');
 Route::get('usuarios/{creador}', 'UsuariosController@usuarios_creador');
+Route::get('usuarios/inactivar/{usuario}', 'UsuariosController@inactivar');
 
 //Rutas de cuentas
 Route::get('cuentas/listar', 'CuentasController@show');
