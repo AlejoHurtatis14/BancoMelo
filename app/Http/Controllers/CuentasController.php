@@ -233,7 +233,7 @@ class CuentasController extends Controller
             }
         }
         $stringCode = $stringCode . 'join("usuarios", "usuarios.id", "=", "cuentas.fk_usuario")
-        ->select("cuentas.*", "usuarios.nombres", "usuarios.apellidos")
+        ->select("cuentas.*", "usuarios.nombres as fk_usuario", "usuarios.apellidos")
         ->get();get();';
         $cuentas = eval($stringCode);
         if (empty($cuentas)) {
@@ -322,41 +322,49 @@ class CuentasController extends Controller
     {
         $codigo = codigo_solicitud::where('codigo', $request['valor'])->where('fk_cuenta', $request['cuenta'])->get();
         if (!empty($codigo[0])) {
-            if ($this->validarTiempoCodigo($codigo[0]['created_at'],$request['fechaActual'])) {
-                $cuenta = cuentas::where('id', $codigo[0]['fk_cuenta'])->get();
-                $saldoNuevo = $cuenta[0]['saldo'] - $codigo[0]['saldo'];
-                if ($saldoNuevo >= 0) {
-                    $resul = cuentas::where('id', $codigo[0]['fk_cuenta'])->update(['saldo' => $saldoNuevo]);
-                    $transaccion = new transaccion;
-                    $transaccion->monto = $codigo[0]['saldo'];
-                    $transaccion->saldo_anterior = $cuenta[0]['saldo'];
-                    $transaccion->saldo_Actual = $saldoNuevo;
-                    $transaccion->fk_usuario_creador = $request['creador'];
-                    $transaccion->fk_cuenta = $codigo[0]['fk_cuenta'];
-                    $transaccion->fk_tipo_transaccion = $request['transaccion'];
-                    $transaccion->fk_codigo = $codigo[0]['id'];
-                    if($transaccion->save()){
-                        $resp = array(
-                            "success" => true,
-                            "mensaje" => 'Retiro exitoso.'
-                        );
+            if ($codigo[0]['estado'] === '1') {
+                if ($this->validarTiempoCodigo($codigo[0]['created_at'],$request['fechaActual'])) {
+                    $cuenta = cuentas::where('id', $codigo[0]['fk_cuenta'])->get();
+                    $saldoNuevo = $cuenta[0]['saldo'] - $codigo[0]['saldo'];
+                    if ($saldoNuevo >= 0) {
+                        $resul = cuentas::where('id', $codigo[0]['fk_cuenta'])->update(['saldo' => $saldoNuevo]);
+                        $transaccion = new transaccion;
+                        $transaccion->monto = $codigo[0]['saldo'];
+                        $transaccion->saldo_anterior = $cuenta[0]['saldo'];
+                        $transaccion->saldo_Actual = $saldoNuevo;
+                        $transaccion->fk_usuario_creador = $request['creador'];
+                        $transaccion->fk_cuenta = $codigo[0]['fk_cuenta'];
+                        $transaccion->fk_tipo_transaccion = $request['transaccion'];
+                        $transaccion->fk_codigo = $codigo[0]['id'];
+                        if($transaccion->save()){
+                            $result = codigo_solicitud::where('id', $codigo[0]['id'])->update(['estado' => 0]);
+                            $resp = array(
+                                "success" => true,
+                                "mensaje" => 'Retiro exitoso.'
+                            );
+                        } else {
+                            $resul = cuentas::where('id', $codigo[0]['fk_cuenta'])->update(['saldo' => $cuenta[0]['saldo']]);
+                            $resp = array(
+                                "success" => false,
+                                "mensaje" => "Transaccion erronea."
+                            );
+                        }
                     } else {
-                        $resul = cuentas::where('id', $codigo[0]['fk_cuenta'])->update(['saldo' => $cuenta[0]['saldo']]);
                         $resp = array(
                             "success" => false,
-                            "mensaje" => "Transaccion erronea."
+                            "mensaje" => 'Saldo insuficiente.'
                         );
                     }
                 } else {
                     $resp = array(
                         "success" => false,
-                        "mensaje" => 'Saldo insuficiente.'
+                        "mensaje" => 'El código ha expirado.'
                     );
                 }
             } else {
                 $resp = array(
                     "success" => false,
-                    "mensaje" => 'El código ha expirado.'
+                    "mensaje" => 'El código ya ha sido aplicado.'
                 );
             }
         } else {
@@ -370,12 +378,21 @@ class CuentasController extends Controller
 
     public function cancelar(Request $request, cuentas $cuentas)
     {
-        $result = cuentas::where('id', $request['cuenta'])->update(['estado' => 0]);
-        if ($result) {
-            $resp = array(
-                "success" => true,
-                "mensaje" => 'Cuenta cancelada.'
-            );
+        $result = cuentas::where('id', $request['cuenta'])->first();
+        if (!empty($result)) {
+            $result->estado = 0;
+            $result->saldo = 0;
+            if ($result->save()){
+                $resp = array(
+                    "success" => true,
+                    "mensaje" => 'Cuenta cancelada.'
+                );
+            } else {
+                $resp = array(
+                    "success" => false,
+                    "mensaje" => 'Cuenta cancelada.'
+                );
+            }
         } else {
             $resp = array(
                 "success" => false,

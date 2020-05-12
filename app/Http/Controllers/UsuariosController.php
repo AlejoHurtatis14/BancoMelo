@@ -436,4 +436,22 @@ class UsuariosController extends Controller
         return $resp;
     }
 
+    public function inactivar($usuario)
+    {
+        $usuarito = usuarios::where('id', $usuario)->get();
+        if (empty($usuarito)) {
+            $resp = array(
+                "success" => false,
+                "mensaje" => "No hay usuarios"
+            );
+        } else {
+            $result = usuarios::where('id', $usuario)->update(['estado' => ($usuarito[0]['estado'] === 1 ? 0 : 1) ]);
+            $resp = array(
+                "success" => true,
+                "mensaje" => 'Modificado satisfactoriamente.'
+            );
+        }
+        return $resp;
+    }    
+
 }
