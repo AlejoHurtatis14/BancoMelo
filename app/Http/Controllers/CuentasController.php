@@ -321,6 +321,7 @@ class CuentasController extends Controller
     public function retirarCuenta(Request $request, cuentas $cuentas)
     {
         $codigo = codigo_solicitud::where('codigo', $request['valor'])->where('fk_cuenta', $request['cuenta'])->get();
+        error_log($codigo);
         if (!empty($codigo[0])) {
             if ($codigo[0]['estado'] === '1') {
                 if ($this->validarTiempoCodigo($codigo[0]['created_at'],$request['fechaActual'])) {
