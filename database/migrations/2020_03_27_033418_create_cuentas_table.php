@@ -21,7 +21,7 @@ class CreateCuentasTable extends Migration
             $table->string('nombre');
             $table->float('saldo');
             $table->integer('estado');
-            $table->integer('fk_tipo_cuenta');
+            $table->string('fk_tipo_cuenta');
             $table->timestamps();
         });
     }

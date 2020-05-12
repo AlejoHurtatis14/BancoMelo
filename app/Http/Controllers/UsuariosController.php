@@ -222,6 +222,16 @@ class UsuariosController extends Controller
     *         )
     *      ),
     *      @OA\Parameter(
+    *         name="fk_perfil",
+    *         in="query",
+    *         description="Perfil.",
+    *         required=true,
+    *         @OA\Schema(
+    *             type="string",
+    *             default=1,
+    *         )
+    *      ),
+    *      @OA\Parameter(
     *         name="usuario_creador",
     *         in="query",
     *         description="Administrador.",
@@ -254,8 +264,9 @@ class UsuariosController extends Controller
             $usuario->usuario = $request->usuario;
             $usuario->password = $request->clave;
             $usuario->nro_documento = $request->documento;
-            $usuario->estado = 1;
-            $usuario->usuario_creador = $request->usuario_creador ? $request->usuario_creador : '1' ;
+            $usuario->estado = $request->estado;
+            $usuario->fk_perfil = $request->fk_perfil ? $request->fk_perfil : 2;
+            $usuario->usuario_creador = $request->usuario_creador ? $request->usuario_creador : 1 ;
 
             if($usuario->save()){
                 $resp = array(
@@ -371,6 +382,58 @@ class UsuariosController extends Controller
     public function destroy(usuarios $usuarios)
     {
         //
+    }
+
+    /**
+    * @OA\Get(
+    *      path="/api/usuarios/listar/{creador}",
+    *      operationId="show",
+    *      tags={"Projects"},
+    *      summary="Get list of projects",
+    *      description="Listar usuarios.",
+    *      @OA\Parameter(
+    *         name="authorization",
+    *         in="query",
+    *         description="Header de autorización.",
+    *         required=true,
+    *         @OA\Schema(
+    *             type="string"
+    *         )
+    *      ),
+    *      @OA\Parameter(
+    *         name="creador",
+    *         in="path",
+    *         description="Creador.",
+    *         required=true,
+    *         @OA\Schema(
+    *             type="string",
+    *         ),
+    *      ),
+    *      @OA\Response(
+    *          response=200,
+    *          description="Operación correcta."
+    *       ),
+    *       @OA\Response(response=400, description="Bad request"),
+    *       security={
+    *           {"api_key_security_example": {}}
+    *       }
+    *     )
+    */
+    public function usuarios_creador($creador)
+    {
+        $usuarios = usuarios::where('usuario_creador', $creador)->get();
+        if (empty($usuarios)) {
+            $resp = array(
+                "success" => false,
+                "mensaje" => "No hay usuarios"
+            );
+        } else {
+            $resp = array(
+                "success" => true,
+                "mensaje" => $usuarios
+            );
+        }
+        return $resp;
     }
 
 }
