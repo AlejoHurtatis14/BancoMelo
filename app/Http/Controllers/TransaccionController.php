@@ -192,8 +192,7 @@ class TransaccionController extends Controller
                 $stringCode = $stringCode . "where('" .  $request[$properties[$i]][0] . "','" . $request[$properties[$i]][1] . "','" . $request[$properties[$i]][2] . "')->";
             }
         }
-        $stringCode = $stringCode . 'join("usuarios", "usuarios.id", "=", "transaccions.fk_usuario_creador")
-        ->join("cuentas", "cuentas.id", "=", "transaccions.fk_cuenta")
+        $stringCode = $stringCode . 'where("transaccions.fk_cuenta",'. $request['cuenta'] .')->join("usuarios", "usuarios.id", "=", "transaccions.fk_usuario_creador")->join("cuentas", "cuentas.id", "=", "transaccions.fk_cuenta")
         ->join("tipo_transacciones", "tipo_transacciones.id", "=", "transaccions.fk_tipo_transaccion")
         ->leftjoin("codigo_solicituds", "codigo_solicituds.id", "=", "transaccions.fk_codigo")
         ->select("transaccions.*", "usuarios.nombres as fk_usuario_creador", "usuarios.apellidos", "cuentas.nombre as fk_cuenta", "codigo_solicituds.codigo as fk_codigo", "tipo_transacciones.nombre as fk_tipo_transaccion")

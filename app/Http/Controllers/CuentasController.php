@@ -235,6 +235,7 @@ class CuentasController extends Controller
         $stringCode = $stringCode . 'join("usuarios", "usuarios.id", "=", "cuentas.fk_usuario")
         ->select("cuentas.*", "usuarios.nombres as fk_usuario", "usuarios.apellidos")
         ->get();get();';
+        //error_log($stringCode);
         $cuentas = eval($stringCode);
         if (empty($cuentas)) {
             $resp = array(
