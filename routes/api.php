@@ -19,8 +19,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::middleware(['guest'])->group(function () {
-    Route::get('login/{nroDoc}/{pass}', 'UsuariosController@inicioSesion');
-    Route::get('validarToken/{tiempoToken}', 'UsuariosController@validarToken');
+    Route::group(['middleware' => ['cors']], function () {
+        Route::get('login/{nroDoc}/{pass}', 'UsuariosController@inicioSesion');
+        Route::get('validarToken/{tiempoToken}', 'UsuariosController@validarToken');
+    });
 });
 
 //Rutas de usuario
