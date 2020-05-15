@@ -21,6 +21,7 @@ class CuentasSeeder extends Seeder
                 'password' => $pass[$i],
                 'estado' => 1,
                 'fk_tipo_cuenta' => 'Ahorro',
+                'usuario_creador' => 1,
                 'fk_usuario' => $i + 1,
                 'created_at' => date('2020-0' . ($fecha + 2) . '-0' . ($fecha + 2) . ' H:m:s'),
                 'updated_at' => date('2020-' . ($fecha + 2) . '-0' . ($fecha + 2) . ' H:m:s'),
@@ -33,6 +34,7 @@ class CuentasSeeder extends Seeder
             'estado' => 1,
             'fk_tipo_cuenta' => 'Ahorro',
             'fk_usuario' => 1,
+            'usuario_creador' => 1,
             'created_at' => date('Y-m-d H:m:s'),
             'updated_at' => date('Y-m-d H:m:s'),
         ]);

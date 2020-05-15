@@ -28,7 +28,6 @@ class CuentasController extends Controller
      */
     public function create(Request $request)
     {
-    
         $cuenta = new cuentas;
         $cuenta->fk_usuario = $request->idUsuario;
         $cuenta->estado = $request->estado;
@@ -36,11 +35,27 @@ class CuentasController extends Controller
         $cuenta->nombre = $request->nombre;
         $cuenta->saldo = $request->saldo;
         $cuenta->fk_tipo_cuenta = $request->tipoCuenta;
+        $cuenta->usuario_creador = $request->creador;
         if($cuenta->save()){
-            $resp = array(
-                "success" => true,
-                "mensaje" => "Se ha creado la cuenta"
-            );
+            $transaccion = new transaccion;
+            $transaccion->monto = $request->saldo;
+            $transaccion->saldo_anterior = 0;
+            $transaccion->saldo_Actual = $request->saldo;
+            $transaccion->fk_usuario_creador = $request->creador;
+            $transaccion->fk_cuenta = $cuenta->id;
+            $transaccion->fk_tipo_transaccion = 3;
+            $transaccion->fk_codigo = '';
+            if($transaccion->save()){
+                $resp = array(
+                    "success" => true,
+                    "mensaje" => "Se ha creado la cuenta"
+                );
+            } else {
+                $resp = array(
+                    "success" => false,
+                    "mensaje" => "No se ha creado la cuenta"
+                );
+            }
         }else{
             $resp = array(
                 "success" => false,

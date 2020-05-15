@@ -15,9 +15,9 @@ class CreateTransaccionsTable extends Migration
     {
         Schema::create('transaccions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->float('monto');
-            $table->float('saldo_anterior');
-            $table->float('saldo_Actual');
+            $table->float('monto', 20);
+            $table->float('saldo_anterior', 20);
+            $table->float('saldo_Actual', 20);
             $table->integer('fk_usuario_creador');
             $table->bigInteger('fk_cuenta')->unsigned();
             $table->foreign('fk_cuenta')->references('id')->on('cuentas');

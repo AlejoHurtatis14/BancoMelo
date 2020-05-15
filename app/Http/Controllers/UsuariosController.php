@@ -70,7 +70,7 @@ class UsuariosController extends Controller
     */
     public function inicioSesion($nroDoc, $pass){
         $usuario = usuarios::where(array(
-            'usuario' => $nroDoc,
+            'nro_documento' => $nroDoc,
             'password' => $pass
         ))->first();
         if (is_object($usuario)){
@@ -254,7 +254,7 @@ class UsuariosController extends Controller
     public function create(Request $request)
     {
         $validarCorreo = usuarios::where('correo', $request->correo)->get();
-        $validarDoc = usuarios::where('nro_documento', $request->nro_documento)->get();
+        $validarDoc = usuarios::where('nro_documento', $request->documento)->get();
         if($validarCorreo->isEmpty() && $validarDoc->isEmpty()){
             $usuario = new usuarios;
             $usuario->nombres = $request->nombres;
@@ -282,9 +282,9 @@ class UsuariosController extends Controller
         }else{
             $mensaje;
             if(!$validarCorreo->isEmpty() && !$validarDoc->isEmpty()){
-                $mensaje = 'Correo electronico y el documento';
+                $mensaje = 'correo electronico y el documento';
             }else if(!$validarCorreo->isEmpty()){
-                $mensaje = 'Correo Electronico';
+                $mensaje = 'correo electronico';
             }else{
                 $mensaje = 'Documento';
             }

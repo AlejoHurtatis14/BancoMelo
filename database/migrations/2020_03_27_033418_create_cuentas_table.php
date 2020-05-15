@@ -19,9 +19,10 @@ class CreateCuentasTable extends Migration
             $table->foreign('fk_usuario')->references('id')->on('usuarios');
             $table->string('password');
             $table->string('nombre');
-            $table->float('saldo');
+            $table->float('saldo', 20);
             $table->integer('estado');
             $table->string('fk_tipo_cuenta');
+            $table->integer('usuario_creador');
             $table->timestamps();
         });
     }
