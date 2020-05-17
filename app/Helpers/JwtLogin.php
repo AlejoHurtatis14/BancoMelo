@@ -5,7 +5,6 @@ namespace App\Helpers;
 use Firebase\JWT\JWT;
 use Firebase\JWT\SignatureInvalidException;
 use Firebase\JWT\UnexpectedValueException;
-use Illuminate\Http\JsonResponse;
 
 class JwtLogin
 {
@@ -15,19 +14,18 @@ class JwtLogin
     public function generarToken($id, $name, $pass){
         $payload = array(
             'sub' => $id,
-            //Usuario activo
             'usuario' => $name,
             'password' => $pass,
             //Tiempo de creacion del token
             'iat' => time(),
             //Tiempo de expiracion del token
             //'exp' => time() + ( 7 * 24 * 60 * 6 )
-            'exp' => time() + ( 10 * 60 * 6 )
+            'exp' => time() + ( 24 * 60 * 6 )
         );
         return JWT::encode($payload,$this->llaveSecreta, $this->algoritmo);
     }
 
-    public function verificarToken($token, $decodificado = !false){
+    public function verificarToken($token, $decodificado = false){
         $auth = false;
         $payload = null;
         try{
@@ -41,7 +39,7 @@ class JwtLogin
             $auth = false;
         }
         if ($decodificado){
-            return (array) $payload;
+            return $payload;
         }else{
             return $auth;
         }

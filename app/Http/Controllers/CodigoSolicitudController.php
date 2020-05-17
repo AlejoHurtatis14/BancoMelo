@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class CodigoSolicitudController extends Controller
 {
+
+    /* public function __constructor()
+    {
+        $this->middleware('cors');
+    } */
+
     /**
      * Display a listing of the resource.
      *

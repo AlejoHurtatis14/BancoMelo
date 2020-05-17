@@ -11,6 +11,7 @@ use Carbon\Carbon;
 
 class CuentasController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
